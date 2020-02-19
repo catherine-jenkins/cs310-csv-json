@@ -68,8 +68,46 @@ public class Converter {
             Iterator<String[]> iterator = full.iterator();
             
             // INSERT YOUR CODE HERE
+            ArrayList <String> colHeaders = new ArrayList<>();
+            ArrayList <String> rowHeaders = new ArrayList<>();
+            ArrayList <ArrayList<Integer>> data = new ArrayList<>();
             
-        }        
+            //converting array of strings to arraylist of strings (column headers)
+            String [] temp = iterator.next();
+            
+            for (int i =0; i < temp.length; i++){
+                colHeaders.add(temp[i]);
+            }
+            
+            //parsing out row headers and data 
+            while (iterator.hasNext()){
+                
+                temp = iterator.next();
+                
+                //add first String of each line to rowHeaders
+                rowHeaders.add(temp[0]);
+                
+                //add remaining strings to data
+                ArrayList <Integer> temp2 = new ArrayList<>();
+                
+                for (int i = 1; i < temp.length; i++){
+                    
+                    temp2.add(Integer.parseInt(temp[i]));
+                }
+                
+                data.add(temp2);
+            }
+            
+            JSONObject jsonObject = new JSONObject();
+            
+            jsonObject.put("colHeaders", colHeaders);
+            jsonObject.put("rowHeaders", rowHeaders);
+            jsonObject.put("data", data);
+            
+            //converting JSON object to JSON string 
+            results = jsonObject.toJSONString();
+        } 
+        
         catch(Exception e) { return e.toString(); }
         
         return results.trim();
