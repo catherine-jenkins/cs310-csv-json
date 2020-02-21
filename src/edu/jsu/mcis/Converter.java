@@ -125,6 +125,43 @@ public class Converter {
             
             // INSERT YOUR CODE HERE
             
+            //parse jsonString to JSONObject
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject)parser.parse(jsonString);
+            
+            //get column headers and store in an array list of strings
+            ArrayList <String> temp = (ArrayList<String>)jsonObject.get("colHeaders");
+            
+            String[] colHeaders = new String[temp.size()];
+            
+            for (int i = 0; i < colHeaders.length; i++){
+                
+                colHeaders[i] = temp.get(i);
+            }
+            
+            //pass array of strings of column headers to csvWriter
+            csvWriter.writeNext(colHeaders);
+            
+            //get row header and data for each line
+            ArrayList<ArrayList<Long>> data = (ArrayList<ArrayList<Long>>)jsonObject.get("data");
+            
+            //creates an array of Strings to feed to csv writer
+            String[] temp2 = new String[1 + data.get(0).size()];
+            
+            ArrayList <String> rowHeaders = (ArrayList<String>)jsonObject.get("rowHeaders");
+            
+            for (int i = 0; i < rowHeaders.size() ; i++){
+                
+                temp2[0] = rowHeaders.get(i);
+                
+                for (int j = 0; j < data.get(0).size(); j++){
+                    
+                    temp2[j+1] = data.get(i).get(j).toString();
+                }
+                
+                csvWriter.writeNext(temp2);
+            }
+            results = writer.toString();
         }
         
         catch(Exception e) { return e.toString(); }
